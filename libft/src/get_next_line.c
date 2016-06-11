@@ -6,7 +6,7 @@
 /*   By: sconso <sconso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/02 19:12:10 by sconso            #+#    #+#             */
-/*   Updated: 2014/01/26 23:35:44 by sconso           ###   ########.fr       */
+/*   Updated: 2014/01/26 23:35:44 by simzam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@ static char			*ft_exit(char **str)
 	return (0);
 }
 
+static char			*ft_check(char *s)
+{
+	if (s)
+		return (s);
+	else
+		return (ft_strdup(""));
+}
+
 char				*get_next_line(int const fd)
 {
 	static char		*tmp;
@@ -30,7 +38,7 @@ char				*get_next_line(int const fd)
 	char			*size;
 	int				ret;
 
-	tmp = (tmp ? tmp : ft_strdup(""));
+	tmp = ft_check(tmp);
 	if (fd < 0 || BUFF_SIZE < 1)
 		return (ft_exit(&tmp));
 	buf = ft_strnew(BUFF_SIZE + 1);
