@@ -6,7 +6,7 @@
 /*   By: simzam   <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/09 08:20:08 by simzam            #+#    #+#             */
-/*   Updated: 2016/06/11 09:19:13 by simzam           ###   ########.fr       */
+/*   Updated: 2016/06/11 09:48:40 by simzam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void		ft_get_board(char *line, t_shape *board)
 	while (++i <= coords.x && (line = get_next_line(0)) != 0)
 	{
 		board->data[i] = ft_strdup(&line[4]);
-		//ft_free(&line);
+		ft_free(&line);
 	}
 }
 
@@ -71,13 +71,13 @@ static void		ft_get_piece(char *line, t_shape *piece)
 	while (ft_isdigit(line[++i]))
 		coords.x = coords.x * 10 + (line[i] - '0');
 	i = -1;
-	//ft_free(&line);
+	ft_free(&line);
 	piece->wid = coords.x;
 	piece->len = coords.y;
 	while (++i < coords.x && (line = get_next_line(0)))
 	{
 		piece->data[i] = ft_strdup(line);
-		//ft_free(&line);
+		ft_free(&line);
 	}
 }
 
