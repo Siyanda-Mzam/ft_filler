@@ -3,26 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_playing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sconso <sconso@student.42.fr>              +#+  +:+       +#+        */
+/*   By: simzam   <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/01/26 22:33:51 by sconso            #+#    #+#             */
-/*   Updated: 2014/01/26 23:31:47 by sconso           ###   ########.fr       */
+/*   Created: 2016/06/10 08:20:08 by simzam            #+#    #+#             */
+/*   Updated: 2016/06/11 09:29:43 by simzam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_filler.h>
-#include <ft_fc_print.h>
+#include "ft_filler.h"
+#include "ft_fc_print.h"
 
-static int		ft_testpos(t_shape *board, t_coords coords, char type)
+/* Reads through the board and attempts a valid play.
+ * Provided that this look-ahead returns positive results.
+ * Honey Badger will make the move.
+ * @param board/piece: Stores the board/piece from input stream.
+ * @param coords: The co-ordinates in the board.
+ * @param pl_type: The player.
+ * @param check: Boolean to flag if a player has been checked.
+ */
+
+static int		ft_test_pos(t_shape *board, t_coords coords, char pl_type)
 {
-	if (type == 1 || type == 3)
+	if (pl_type == 1 || pl_type == 3)
 	{
 		if (board->data[coords.x][coords.y] == 'O')
 			return (1);
 		if (board->data[coords.x][coords.y] == 'o')
 			return (1);
 	}
-	if (type == 2 || type == 3)
+	if (pl_type == 2 || pl_type == 3)
 	{
 		if (board->data[coords.x][coords.y] == 'X')
 			return (1);
@@ -32,20 +41,20 @@ static int		ft_testpos(t_shape *board, t_coords coords, char type)
 	return (0);
 }
 
-static int		ft_trying(t_coords c, t_shape *board, char p, int *check)
+static int		ft_attempt(t_coords test, t_shape *board, char plr, int *check)
 {
-	if (c.x >= board->h || c.y >= board->l)
+	if (test.x >= board->wid || test.y >= board->len)
 		return (0);
-	else if (!*check && ft_testpos(board, c, p))
+	else if (!*check && ft_test_pos(board, test, plr))
 		*check = 1;
-	else if (*check && ft_testpos(board, c, p))
+	else if (*check && ft_test_pos(board, test, plr))
 		return (0);
-	else if (ft_testpos(board, c, 3))
+	else if (ft_test_pos(board, test, 3))
 		return (0);
 	return (1);
 }
 
-static int		ft_try(t_shape *board, t_shape *piece, char player)
+static int		ft_look_ahead(t_shape *board, t_shape *piece, char player)
 {
 	int			check;
 	t_coords	test;
@@ -61,23 +70,23 @@ static int		ft_try(t_shape *board, t_shape *piece, char player)
 			{
 				test.x = board->pos.x + piece->pos.x;
 				test.y = board->pos.y + piece->pos.y;
-				if (!ft_trying(test, board, player, &check))
+				if (!ft_attempt(test, board, player, &check))
 					return (0);
 			}
 		}
 	}
-	if (!check || board->pos.x + piece->h > board->h)
+	if (!check || board->pos.x + piece->wid > board->wid)
 		return (0);
-	if (board->pos.y + piece->l >= board->l)
+	if (board->pos.y + piece->len >= board->len)
 		return (0);
 	return (1);
 }
 
-static void		ft_putcoord(int c1, int c2)
+static void		ft_putcoord(int coord_1, int coord_2)
 {
-	ft_putnbr_fd(c1, 1);
+	ft_putnbr_fd(coord_1, 1);
 	ft_putchar_fd(' ', 1);
-	ft_putnbr_fd(c2, 1);
+	ft_putnbr_fd(coord_2, 1);
 	ft_putchar_fd('\n', 1);
 }
 
@@ -89,7 +98,7 @@ void			ft_play(t_shape *board, t_shape *piece, char player)
 		board->pos.y = -1;
 		while (board->data[board->pos.x][++board->pos.y])
 		{
-			if (ft_try(board, piece, player))
+			if (ft_look_ahead(board, piece, player))
 			{
 				ft_putcoord(board->pos.x, board->pos.y);
 				return ;

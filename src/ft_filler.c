@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_filler.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sconso <sconso@student.42.fr>              +#+  +:+       +#+        */
+/*   By: simzam   <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/01/24 19:47:49 by sconso            #+#    #+#             */
-/*   Updated: 2014/01/27 00:00:59 by sconso           ###   ########.fr       */
+/*   Created: 2016/06/07 08:20:08 by simzam            #+#    #+#             */
+/*   Updated: 2016/06/10 12:38:45 by simzam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_filler.h>
-#include <stdlib.h>
+#include "ft_filler.h"
+#include "stdlib.h"
 #include <unistd.h>
+
+/* The entry-point of the program */
 
 int		main(void)
 {
